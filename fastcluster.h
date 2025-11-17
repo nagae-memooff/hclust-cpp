@@ -74,7 +74,7 @@ enum hclust_fast_methods {
   HCLUST_METHOD_MEDIAN = 3,
 
   // add centroid
-  HCLUST_METHOD_CENTROID = 4,
+  HCLUST_METHOD_CENTROID = 5,
 };
   
 
