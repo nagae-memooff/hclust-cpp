@@ -153,6 +153,8 @@ int hclust_fast(int n, double* distmat, int method, int* merge, double* height) 
     // 具体调用形式要和 fastcluster 原始 C++ 代码保持一致，比如：
     // generic_linkage<METHOD_METR_CENTROID, t_float>(n, distmat, NULL, Z2);
     // centroid 需要簇大小信息，所以和 average/ward 一样，要准备 members 数组
+    fprintf(stdout, "[fastcluster] *** ENTER CENTROID LINKAGE ***\n");
+
     double* members = new double[n];
     for (int i = 0; i < n; ++i) {
       members[i] = 1.0;  // 初始每个样本各自是大小为 1 的簇
