@@ -12,16 +12,17 @@
 #include <algorithm>
 
 #include "fastcluster.h"
-namespace fastclustercpp {
 
 // Code by Daniel Müllner
 // workaround to make it usable as a standalone version (without R)
+namespace fastclustercpp {
 bool fc_isnan(double x) { return x != x; }
 }
 #include "fastcluster_dm.cpp"
 #include "fastcluster_R_dm.cpp"
 
 namespace fastclustercpp {
+
 //
 // Assigns cluster labels (0, ..., nclust-1) to the n points such
 // that the cluster result is split into nclust clusters.
@@ -133,7 +134,7 @@ void cutree_cdist(int n, const int* merge, double* height, double cdist, int* la
 //   1 = invalid method
 //
 int hclust_fast(int n, double* distmat, int method, int* merge, double* height) {
-  
+
   // call appropriate culstering function
   cluster_result Z2(n-1);
   if (method == HCLUST_METHOD_SINGLE) {
@@ -151,22 +152,6 @@ int hclust_fast(int n, double* distmat, int method, int* merge, double* height) 
     NN_chain_core<METHOD_METR_AVERAGE, t_float>(n, distmat, members, Z2);
     delete[] members;
   }
-  else if (method == HCLUST_METHOD_CENTROID) {
-    // TODO 添加CENTROID 实现，现在暂时用average 代替，跑通程序后替换实现
-    // 具体调用形式要和 fastcluster 原始 C++ 代码保持一致，比如：
-    // generic_linkage<METHOD_METR_CENTROID, t_float>(n, distmat, NULL, Z2);
-    // centroid 需要簇大小信息，所以和 average/ward 一样，要准备 members 数组
-    fprintf(stdout, "[fastcluster] *** ENTER CENTROID LINKAGE ***\n");
-
-    double* members = new double[n];
-    for (int i = 0; i < n; ++i) {
-      members[i] = 1.0;  // 初始每个样本各自是大小为 1 的簇
-    }
-    // 使用 generic_linkage + METHOD_METR_CENTROID
-    generic_linkage<METHOD_METR_CENTROID, t_float>(n, distmat, members, Z2);
-    delete[] members;
-
-  }
   else if (method == HCLUST_METHOD_MEDIAN) {
     // best median distance (beware: O(n^3))
     generic_linkage<METHOD_METR_MEDIAN, t_float>(n, distmat, NULL, Z2);
@@ -174,7 +159,7 @@ int hclust_fast(int n, double* distmat, int method, int* merge, double* height) 
   else {
     return 1;
   }
-  
+
   int* order = new int[n];
   if (method == HCLUST_METHOD_MEDIAN) {
     generate_R_dendrogram<true>(merge, height, order, Z2, n);
@@ -183,7 +168,8 @@ int hclust_fast(int n, double* distmat, int method, int* merge, double* height) 
   }
 
   delete[] order; // only needed for visualization
-  
+
   return 0;
 }
-}
+
+} // namespace fastclustercpp
