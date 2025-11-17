@@ -148,6 +148,16 @@ int hclust_fast(int n, double* distmat, int method, int* merge, double* height) 
     NN_chain_core<METHOD_METR_AVERAGE, t_float>(n, distmat, members, Z2);
     delete[] members;
   }
+  else if (method == HCLUST_METHOD_CENTROID) {
+    // TODO 添加CENTROID 实现，现在暂时用average 代替，跑通程序后替换实现
+    // 具体调用形式要和 fastcluster 原始 C++ 代码保持一致，比如：
+    // generic_linkage<METHOD_METR_CENTROID, t_float>(n, distmat, NULL, Z2);
+
+    double* members = new double[n];
+    for (int i=0; i<n; i++) members[i] = 1;
+    NN_chain_core<METHOD_METR_AVERAGE, t_float>(n, distmat, members, Z2);
+    delete[] members;
+  }
   else if (method == HCLUST_METHOD_MEDIAN) {
     // best median distance (beware: O(n^3))
     generic_linkage<METHOD_METR_MEDIAN, t_float>(n, distmat, NULL, Z2);

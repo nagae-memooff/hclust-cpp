@@ -71,7 +71,10 @@ enum hclust_fast_methods {
   HCLUST_METHOD_AVERAGE = 2,
   // median link with the generic algorithm (Müllner, 2011)
   // requires euclidean distances as distance data
-  HCLUST_METHOD_MEDIAN = 3
+  HCLUST_METHOD_MEDIAN = 3,
+
+  // add centroid
+  HCLUST_METHOD_CENTROID = 4,
 };
   
 
